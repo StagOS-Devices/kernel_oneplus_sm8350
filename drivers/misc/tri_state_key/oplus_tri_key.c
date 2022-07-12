@@ -47,6 +47,10 @@
 #include "oplus_tri_key.h"
 #include "../../extcon/extcon.h"
 
+#define KEY_MODE_NORMAL 601
+#define KEY_MODE_VIBRATION 602
+#define KEY_MODE_SILENCE 603
+
 #define TRI_KEY_DEVICE "oplus,hall_tri_state_key"
 #define TRI_KEY_TAG                  "[tri_state_key] "
 #define TRI_KEY_ERR(fmt, args...)\
@@ -732,26 +736,26 @@ static void report_key_value(struct extcon_dev_data *chip)
 {
 	if (chip->position == DOWN_STATE) {
 		chip->state = 3;
-		input_report_key(chip->input_dev, KEY_F3, 3);
+		input_report_key(chip->input_dev, KEY_MODE_NORMAL, 1);
 		input_sync(chip->input_dev);
-		input_report_key(chip->input_dev, KEY_F3, 0);
+		input_report_key(chip->input_dev, KEY_MODE_NORMAL, 0);
 		input_sync(chip->input_dev);
 		TRI_KEY_LOG("tri_key: report down key successful!\n");
 	}
 	if (chip->position == UP_STATE) {
 		chip->state = 1;
 		TRI_KEY_LOG("tri_key: report up key successful!\n");
-		input_report_key(chip->input_dev, KEY_F3, 1);
+		input_report_key(chip->input_dev, KEY_MODE_SILENCE, 1);
 		input_sync(chip->input_dev);
-		input_report_key(chip->input_dev, KEY_F3, 0);
+		input_report_key(chip->input_dev, KEY_MODE_SILENCE, 0);
 		input_sync(chip->input_dev);
 	}
 	if (chip->position == MID_STATE) {
 		chip->state = 2;
 		TRI_KEY_LOG("tri_key: report mid key successful!\n");
-		input_report_key(chip->input_dev, KEY_F3, 2);
+		input_report_key(chip->input_dev, KEY_MODE_VIBRATION, 1);
 		input_sync(chip->input_dev);
-		input_report_key(chip->input_dev, KEY_F3, 0);
+		input_report_key(chip->input_dev, KEY_MODE_VIBRATION, 0);
 		input_sync(chip->input_dev);
 	} else
 		TRI_KEY_LOG("no report\n");
@@ -1316,7 +1320,9 @@ static void register_tri_key_dev_work(struct work_struct *work)
 
 	set_bit(EV_SYN, chip->input_dev->evbit);
 	set_bit(EV_KEY, chip->input_dev->evbit);
-	set_bit(KEY_F3, chip->input_dev->keybit);
+	set_bit(KEY_MODE_SILENCE, chip->input_dev->keybit);
+	set_bit(KEY_MODE_VIBRATION, chip->input_dev->keybit);
+	set_bit(KEY_MODE_NORMAL, chip->input_dev->keybit);
 	res = input_register_device(chip->input_dev);
 	if (res) {
 		TRI_KEY_ERR("%s: Failed to register input device\n", __func__);
