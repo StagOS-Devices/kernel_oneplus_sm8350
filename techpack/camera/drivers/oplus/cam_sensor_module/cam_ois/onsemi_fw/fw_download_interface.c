@@ -204,7 +204,7 @@ static ssize_t ois_write(struct file *p_file,
                 iIndex++;
 	}
 	if (ois_ctrls[CAM_OIS_MASTER] && addr != 0) {
-		result = RamWrite32A_oplus(ois_ctrls[CAM_OIS_MASTER], addr, value);
+		result = RamWrite32A_oneplus(ois_ctrls[CAM_OIS_MASTER], addr, value);
 		if (result < 0) {
 			CAM_ERR(CAM_OIS, "write addr = 0x%x, value = 0x%x fail", addr, value);
 		} else {
@@ -251,7 +251,7 @@ static ssize_t ois_write_tele(struct file *p_file,
 		iIndex++;
 	}
 	if (ois_ctrls[CAM_OIS_SLAVE] && addr != 0) {
-		result = RamWrite32A_oplus(ois_ctrls[CAM_OIS_SLAVE], addr, value);
+		result = RamWrite32A_oneplus(ois_ctrls[CAM_OIS_SLAVE], addr, value);
 		if (result < 0) {
 			CAM_ERR(CAM_OIS, "write addr = 0x%x, value = 0x%x fail", addr, value);
 		} else {
@@ -569,7 +569,7 @@ void CntWrt(  void *register_data, uint16_t size)
 // 	return rc;
 // }
 
-int RamWrite32A_oplus(struct cam_ois_ctrl_t *o_ctrl, uint32_t addr, uint32_t data)
+int RamWrite32A_oneplus(struct cam_ois_ctrl_t *o_ctrl, uint32_t addr, uint32_t data)
 {
 	int32_t rc = 0;
 	int retry = 3;
@@ -605,7 +605,7 @@ int RamWrite32A_oplus(struct cam_ois_ctrl_t *o_ctrl, uint32_t addr, uint32_t dat
 	return rc;
 }
 
-int RamRead32A_oplus(struct cam_ois_ctrl_t *o_ctrl, uint32_t addr, uint32_t* data)
+int RamRead32A_oneplus(struct cam_ois_ctrl_t *o_ctrl, uint32_t addr, uint32_t* data)
 {
 	int32_t rc = 0;
 	int retry = 3;
@@ -996,8 +996,8 @@ int DownloadFW(struct cam_ois_ctrl_t *o_ctrl)
                         else if(o_ctrl->ois_type == CAM_OIS_SLAVE)
                                 o_ctrl->ois_gyro_vendor = 3;
                         ois_ctrls[CAM_OIS_MASTER]->ois_gyro_vendor = 6;
-			if(ois_ctrls[CAM_OIS_SLAVE])
-				ois_ctrls[CAM_OIS_SLAVE]->ois_gyro_vendor = 3;
+                        if(ois_ctrls[CAM_OIS_SLAVE])
+                                ois_ctrls[CAM_OIS_SLAVE]->ois_gyro_vendor = 3;
                 }else if(o_ctrl->opcode.prog == 3){
                         CAM_INFO(CAM_OIS, "update gyro vendor to =%d",o_ctrl->opcode.prog);
                         if(o_ctrl->ois_type == CAM_OIS_MASTER)
@@ -1005,8 +1005,8 @@ int DownloadFW(struct cam_ois_ctrl_t *o_ctrl)
                         else if(o_ctrl->ois_type == CAM_OIS_SLAVE)
                                 o_ctrl->ois_gyro_vendor = 0;
                         ois_ctrls[CAM_OIS_MASTER]->ois_gyro_vendor = 0;
-			if(ois_ctrls[CAM_OIS_SLAVE])
-				ois_ctrls[CAM_OIS_SLAVE]->ois_gyro_vendor = 0;
+                        if(ois_ctrls[CAM_OIS_SLAVE])
+                                ois_ctrls[CAM_OIS_SLAVE]->ois_gyro_vendor = 0;
                 }
 
 		if (CAM_OIS_INVALID == ois_state[o_ctrl->ois_type]) {
@@ -1194,27 +1194,27 @@ int OISPollThread128(void *arg)
         }
         mutex_unlock(&(o_ctrl->ois_power_down_mutex));
 
-        RamWrite32A_oplus(o_ctrl,0xF110, 0x0);//Clear buffer to all "0" & enable buffer update function.
-        RamRead32A_oplus(o_ctrl, 0x82B8, &data);
+        RamWrite32A_oneplus(o_ctrl,0xF110, 0x0);//Clear buffer to all "0" & enable buffer update function.
+        RamRead32A_oneplus(o_ctrl, 0x82B8, &data);
 	CAM_ERR(CAM_OIS, "ois addr=0x82B8 data=0x%x",data);
 
-        RamRead32A_oplus(o_ctrl, 0x8318, &data);
+        RamRead32A_oneplus(o_ctrl, 0x8318, &data);
         CAM_ERR(CAM_OIS, "ois addr=0X8318 data=0x%x",data);
 
-        RamRead32A_oplus(o_ctrl, 0x8800, &data);
+        RamRead32A_oneplus(o_ctrl, 0x8800, &data);
         CAM_ERR(CAM_OIS, "ois addr=0x8800 data=0x%x",data);
 
-        RamWrite32A_oplus(o_ctrl,0x82B8, 0x40000000);
-        RamWrite32A_oplus(o_ctrl,0x8318, 0x40000000);
-        RamWrite32A_oplus(o_ctrl,0x8800, 0x10);
+        RamWrite32A_oneplus(o_ctrl,0x82B8, 0x40000000);
+        RamWrite32A_oneplus(o_ctrl,0x8318, 0x40000000);
+        RamWrite32A_oneplus(o_ctrl,0x8800, 0x10);
 
-        RamRead32A_oplus(o_ctrl, 0x82B8, &data);
+        RamRead32A_oneplus(o_ctrl, 0x82B8, &data);
 	CAM_ERR(CAM_OIS, "ois addr=0x82B8 data=0x%x",data);
 
-        RamRead32A_oplus(o_ctrl, 0x8318, &data);
+        RamRead32A_oneplus(o_ctrl, 0x8318, &data);
         CAM_ERR(CAM_OIS, "ois addr=0X8318 data=0x%x",data);
 
-        RamRead32A_oplus(o_ctrl, 0x8800, &data);
+        RamRead32A_oneplus(o_ctrl, 0x8800, &data);
         CAM_ERR(CAM_OIS, "ois addr=0x8800 data=0x%x",data);
 
 
@@ -1565,7 +1565,6 @@ int OIS_READ_HALL_DATA_TO_UMD_NEW (struct cam_ois_ctrl_t *o_ctrl,struct i2c_sett
                         CAM_DBG(CAM_OIS,"start read");
                         OISCountinueRead(o_ctrl, 0xF111, (void *)temp_buff, read_length);
                         CAM_DBG(CAM_OIS,"read done");
-
                         /* ois data count is 144 Bytes and have max sample is 32; last Bytes is sample count,and 32/33 Bytes means Qtimer */
 
                         fifo_count = temp_buff[143];
@@ -1581,10 +1580,9 @@ int OIS_READ_HALL_DATA_TO_UMD_NEW (struct cam_ois_ctrl_t *o_ctrl,struct i2c_sett
                                 read_buff[j*4+2]=temp_buff[(fifo_count-j-1)*4+2];
                                 read_buff[j*4+3]=temp_buff[(fifo_count-j-1)*4+3];
                         }
+
                         for(j=0;j<8;j++)
                                 read_buff[128+j]=temp_buff[128+j];
-
-
 
                         for ( j = 0; j < 8; j++)
                         {
@@ -1805,7 +1803,7 @@ bool IsOISReady(struct cam_ois_ctrl_t *o_ctrl)
 
 	if (o_ctrl) {
                 do {
-		        RamRead32A_oplus(o_ctrl,0xF100, &temp);
+		        RamRead32A_oneplus(o_ctrl,0xF100, &temp);
 		        CAM_ERR(CAM_OIS, "OIS %d 0xF100 = 0x%x", o_ctrl->ois_type, temp);
 		        if (temp == 0) {
 			        ois_state[o_ctrl->ois_type] = CAM_OIS_READY;

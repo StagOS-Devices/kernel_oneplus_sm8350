@@ -18,8 +18,8 @@
 
 //int RamWrite32A(uint32_t addr, uint32_t data);
 //int RamRead32A(uint32_t addr, uint32_t* data);
-int RamWrite32A_oplus(struct cam_ois_ctrl_t *o_ctrl, uint32_t addr, uint32_t data);
-int RamRead32A_oplus(struct cam_ois_ctrl_t *o_ctrl, uint32_t addr, uint32_t* data);
+int RamWrite32A_oneplus(struct cam_ois_ctrl_t *o_ctrl, uint32_t addr, uint32_t data);
+int RamRead32A_oneplus(struct cam_ois_ctrl_t *o_ctrl, uint32_t addr, uint32_t* data);
 int DownloadFW(struct cam_ois_ctrl_t *o_ctrl);
 int OISControl(struct cam_ois_ctrl_t *o_ctrl);
 void ReadOISHALLData(struct cam_ois_ctrl_t *o_ctrl, void *data);

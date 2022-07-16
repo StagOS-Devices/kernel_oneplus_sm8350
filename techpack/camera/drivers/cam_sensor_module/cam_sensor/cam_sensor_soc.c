@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /*
- * Copyright (c) 2017-2021, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2017-2019, The Linux Foundation. All rights reserved.
  */
 
 #include <linux/of.h>
@@ -14,7 +14,6 @@
 #ifdef OPLUS_FEATURE_CAMERA_COMMON
 #include "oplus_cam_sensor_core.h"
 #endif
-
 int32_t cam_sensor_get_sub_module_index(struct device_node *of_node,
 	struct cam_sensor_board_info *s_info)
 {
@@ -206,9 +205,8 @@ static int32_t cam_sensor_driver_get_dt_data(struct cam_sensor_ctrl_t *s_ctrl)
 		sensordata->pos_yaw = 360;
 	}
 #ifdef OPLUS_FEATURE_CAMERA_COMMON
-	cam_sensor_get_dt_data(s_ctrl);
+        cam_sensor_get_dt_data(s_ctrl);
 #endif
-
 	return rc;
 
 FREE_SENSOR_DATA:
@@ -274,11 +272,6 @@ int32_t cam_sensor_parse_dt(struct cam_sensor_ctrl_t *s_ctrl)
 			return rc;
 		}
 	}
-
-	rc = cam_sensor_util_regulator_powerup(soc_info);
-	if (rc < 0)
-		return rc;
-
 	rc = msm_sensor_init_default_params(s_ctrl);
 	if (rc < 0) {
 		CAM_ERR(CAM_SENSOR,

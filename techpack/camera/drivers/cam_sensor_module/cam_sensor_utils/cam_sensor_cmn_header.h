@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
- * Copyright (c) 2017-2021, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2017-2020, The Linux Foundation. All rights reserved.
  */
 
 #ifndef _CAM_SENSOR_CMN_HEADER_
@@ -328,8 +328,8 @@ struct cam_camera_slave_info {
 	uint16_t sensor_id;
 	uint16_t sensor_id_mask;
 #ifdef OPLUS_FEATURE_CAMERA_COMMON
-	uint8_t  addr_type;
-	uint8_t  data_type;
+        uint8_t  addr_type;
+        uint8_t  data_type;
 #endif
 };
 
@@ -360,12 +360,6 @@ enum msm_sensor_camera_id_t {
 	CAMERA_7,
 	CAMERA_8,
 	CAMERA_9,
-	CAMERA_10,
-	CAMERA_11,
-	CAMERA_12,
-	CAMERA_13,
-	CAMERA_14,
-	CAMERA_15,
 	MAX_CAMERAS,
 };
 
@@ -392,7 +386,7 @@ struct cam_sensor_power_setting {
 struct cam_sensor_board_info {
 	struct cam_camera_slave_info slave_info;
 #ifdef OPLUS_FEATURE_CAMERA_COMMON
-	struct cam_camera_id_info id_info;
+        struct cam_camera_id_info id_info;
 #endif
 	int32_t sensor_mount_angle;
 	int32_t secure_mode;
